@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FACE</title>
+</head>
+<body>
+    <div class="inputVideo">
+        <video id="video" playsinline autoplay></video>
+    </div>
+
+    <div class="controller">
+        <button id="snapshot">Capture</button>
+    </div>
+    <p id="err"></p>
+    <div id="canvas" width="640" height="480"></div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="js/index.js"></script>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById('snapshot');
+    const errorMSG = document.getElementById('err');
+
+    const constraints = {
+        audio: true,
+        video:{
+            width: 1280,
+            height: 720
+        }
+    };
+
+    async function init() {
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            handleSuccess(stream);
+        }
+        catch(e){
+            errorMSG.innerHTML = 'hi';
+        }
+    }
+
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+
+    init();
+
+    var context = document.getElementById('canvas');
+    snap.addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+    });
+</script>
+
+</html>
