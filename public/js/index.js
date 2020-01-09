@@ -1,5 +1,6 @@
 var socket = io();
 
+//detection
 const video = document.getElementById('video');
 
 Promise.all([
