@@ -35,6 +35,7 @@ async function start() {
             drawB.draw(canvas);
         });
 
+
     })
 }
 
