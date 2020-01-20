@@ -2,23 +2,23 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>FACE</title>
+        <title>OpenCV.js</title>
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-    <!--
-        <div class="inputVideo">
-            <video id="video" width="720" height="560" autoplay muted></video>
-        </div>
-    -->
+    <input type="file" id="fileInput" name="file"/>
+    <img id="imageSrc" alt="No Image" />
 
-    <input type="file" id="imageUpload">
+    <canvas id="imageCanvas"></canvas>
 
+    <button type="button" id="circlesButton" class="btn btn-primary">Circle Detection</button>
+
+    <a href="#" id="downloadButton">Download Image</a>
+
+    <div class="modal"></div>
     </body>
     <script src="/socket.io/socket.io.js"></script>
-    <!--<script src="https://code.jquery.com/jquery-1.11.1.js"></script>-->
-    <script src="js/face-api.min.js"></script>
-    <!-- defer runs the script after the page is done loading -->
+    <script async src="js/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
     <script defer src="js/index.js"></script>
 
 </html>

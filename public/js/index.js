@@ -1,56 +1,58 @@
-var socket = io();
+document.body.classList.add("loading");
 
-const imageUpload = document.getElementById('imageUpload');
-
-Promise.all([
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
-]).then(start);
-
-async function start() {
-    const container = document.createElement('div');
-    container.style.position = 'relative';
-    document.body.append(container);
-    const labeledDescriptors = await loadLImages();
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6);
-    let image;
-    let canvas
-    document.body.append('Loaded');
-    imageUpload.addEventListener('change', async () =>{
-        if (image) image.remove();
-        if (canvas) canvas.remove();
-        image = await faceapi.bufferToImage(imageUpload.files[0]);
-        container.append(image);
-        canvas = faceapi.createCanvasFromMedia(image);
-        container.append(canvas);
-        const displaySize = {width: image.width, height: image.height};
-        faceapi.matchDimensions(canvas, displaySize);
-        const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
-        const resisedDetections = faceapi.resizeResults(detections, displaySize);
-        const results = resisedDetections.map(d => faceMatcher.findBestMatch(d.descriptor));
-        results.forEach((results, i) => {
-            const box = resisedDetections[i].detection.box;
-            const drawB = new faceapi.draw.DrawBox(box, {label: results.toString()});
-            drawB.draw(canvas);
-        });
-
-
-    })
+function onOpenCvReady(){
+    document.body.classList.remove("loading");
 }
 
-function loadLImages() {
-    const label = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark'];
-    return Promise.all(
-        label.map(async label => {
-            const descriptions = [];
-            for(let i = 1; i <= 2; i++){
-                const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`);
-                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
-                descriptions.push(detections.descriptor);
-            }
+let imgElement = document.getElementById('imageSrc');
+let inputElement = document.getElementById('fileInput');
 
-            return new faceapi.LabeledFaceDescriptors(label, descriptions);
-        })
-    )
-}
+inputElement.onchange = function () {
+    imgElement.src = URL.createObjectURL(event.target.files[0]);
+};
+
+imgElement.onload = function () {
+    let image = cv.imread(imgElement);
+    cv.imshow('imageCanvas', image);
+    image.delete();
+};
+
+document.getElementById('circlesButton').onclick = function () {
+    this.disabled = true;
+    document.body.classList.add("loading");
+
+    let srcMat = cv.imread('imageCanvas');
+    let displayMat = srcMat.clone();
+    let circlesMat = new cv.Mat();
+
+    cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY);
+
+    cv.HoughCircles(srcMat, circlesMat, cv.HOUGH_GRADIENT, 1, 45, 75, 40, 0, 0);
+
+
+    let x = circlesMat.data32F[0];
+    let y = circlesMat.data32F[1];
+    let radius = circlesMat.data32F[2];
+
+    for (let i = 0; i < circlesMat.cols; ++i) {
+        let x = circlesMat.data32F[i * 3];
+        let y = circlesMat.data32F[i * 3 + 1];
+        let radius = circlesMat.data32F[i * 3 + 2];
+        let center = new cv.Point(x, y);
+        cv.circle(displayMat, center, radius, [0, 0, 0, 255], 3);
+    }
+
+    cv.imshow('imageCanvas', displayMat);
+
+    srcMat.delete();
+    displayMat.delete();
+    circlesMat.delete();
+
+    this.disabled = false;
+    document.body.classList.remove("loading");
+};
+
+document.getElementById('downloadButton').onclick = function() {
+    this.href = document.getElementById("imageCanvas").toDataURL();
+    this.download = "image.png";
+};

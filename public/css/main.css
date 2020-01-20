@@ -1,16 +1,23 @@
-body{
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8)
+    url('http://i.stack.imgur.com/FhHRx.gif')
+    50% 50%
+    no-repeat;
 }
 
-canvas{
-    position: absolute;
-    top: 0;
-    left: 0;
+/* prevent scrollbar from display during load */
+body.loading {
+    overflow: hidden;
+}
+
+/* display the modal when loading class is added to body */
+body.loading .modal {
+    display: block;
 }
