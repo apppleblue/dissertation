@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OpenCV</title>
+    <link rel="stylesheet" href="css/main.css">
+    <ul>
+        <li><a href="addNew.html">Add New Person</a></li>
+        <li><a href="index.html">Home</a></li>
+    </ul>
+</head>
+<body>
+    <video id="inputVideo" width="720" height="560" autoplay muted></video>
+    <canvas id="inputCanvas" width="720" height="560" hidden></canvas>
+    <!--<img id="output" width="720" height="560">-->
+    <div id="output"></div>
+    <div id="dbOutput"></div>
+</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script defer src="js/index.js"></script>
+</html>
