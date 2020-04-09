@@ -28,26 +28,28 @@ module.exports = {
                     });
                     break;
                 case 'getUserDetails':
-                    console.log('userDets');
-                    db.collection('People').find({}).toArray(function (err, result) {
+                    const query = {name: 'Tim'};
+                    db.collection('People').find(query).toArray(function (err, result) {
                         if (err) throw err;
-
-
-                        //returnData = result;
-                        returnData = 1111;
-                        //console.log(returnData);
-                        //return result;
-
-                        // setTimeout(function () {
-                        //     returnData = result;
-                        //     return result;
-                        //     //console.log(returnData);
-                        // }, 2000);
+                        console.log(result);
+                        client.close();
                     });
                     break;
             }
             client.close();
         });
+    },
+
+    getUserDetails: function (name){
+        MongoClient.connect(url, function(err, client) {
+            assert.equal(null, err);
+            console.log('userDets');
+
+            const db = client.db(dbName);
+
+        });
+
+
     },
 
     testReturn: function () {

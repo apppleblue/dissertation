@@ -4,14 +4,14 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const bodyParser = require("body-parser");
-const func = require('./databaseFunctions');
+const funcDB = require('./databaseFunctions');
 const funcFD = require('./faceDetection');
 const funcBFR = require('./basicFaceRecognition');
 
 
 var connections = [];
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use(express.static(__dirname + '/public'));
 app.use('/js', express.static(__dirname + 'public/js'));
@@ -24,16 +24,17 @@ app.get('/', function(req, res){
 
 
 //Getting form data
-app.post('/addNew', function (req, res) {
-    console.log("Adding new user");
-    console.log("name:" + req.body.name);
-
-    const newUserobj = {name: req.body.name, age: req.body.age, uni: req.body.uni};
-
-    func.sendFormData('addNewUser', newUserobj);
-
- res.end();
-});
+// app.post('/addNew', function (req, res) {
+//     console.log("Adding new user");
+//     console.log("name:" + req.body.name);
+//
+//     const newUserobj = {name: req.body.name, age: req.body.age, uni: req.body.uni, img1: req.body.img1};
+//     //, img2: req.body.img2, img3: req.body.img3, img4: req.body.img4
+//
+//     func.sendFormData('addNewUser', newUserobj);
+//
+//  res.end();
+// });
 
 // func.sendFormData('getTotalUsers', null);
 // func.sendFormData('getUserDetails', null);
@@ -47,7 +48,12 @@ app.post('/addNew', function (req, res) {
 
 //io.sockets.emit('dbOutput', r);
 
-funcBFR.runModel('lbph');
+// setTimeout(function () {
+//     const imgPath = '/public/assets/nn/input.jpg';
+//     //funcBFR.runModel('lbph', imgPath);
+// }, 1500);
+
+
 
 // Working area end
 
@@ -57,18 +63,30 @@ http.listen(8000, function(){
         connections.push(socket);
         console.log('New User');
 
-        socket.on('image', funcFD.processImg);
+        //socket.on('image', funcFD.processImg);
 
-        // socket.on('image', function (b64) {
-        //     var htmlImg = funcFD.processImg(b64);
-        //
-        //     console.log(htmlImg);
-        //
-        //     //sendImage(htmlImg);
-        // });
+        socket.on('faceRec', function (b64) {
+           //setInterval(function () {
+               const out = funcBFR.runModel('lbph', b64);
 
+               if(out!=null){
+                   //console.log(out.rec);
+                   sendImage(out);
+               }
+           //}, 1000);
+        });
+
+        socket.on('newUser', function (details) {
+            console.log('New User Input');
+            funcDB.sendFormData('addNewUser', details);
+        });
     });
 });
+
+function sendImage(out){
+    io.sockets.emit('outputImage', out);
+}
+
 
 module.exports = {
     sendImage: function (htmlImg){

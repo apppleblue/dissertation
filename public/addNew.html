@@ -9,12 +9,23 @@
     </ul>
 </head>
 <body>
-    <form action="/addNew" method="POST">
-       <input type="text" name="name" placeholder="Enter Name">
-       <input type="number" name="age" placeholder="Enter Age">
-       <input type="text" name="uni" placeholder="Enter Uni">
-       <button type="submit">Add New Person</button>
-    </form>
+
+    <video id="inputVideo" width="300" height="300" autoplay muted></video>
+    <canvas id="inputCanvas" width="300" height="300" hidden></canvas>
+    <div id="output"></div>
+    <button id="snap">Take Picture</button>
+    <button id="saveBtn">Save Picture</button>
+
+    <!--<form action="/addNew" method="POST">-->
+       <input id="name" type="text" name="name" placeholder="Enter Name">
+       <input id="age" type="number" name="age" placeholder="Enter Age">
+       <input id="uni" type="text" name="uni" placeholder="Enter Uni">
+       <input id="img1" type="text" value=" " name="img1">
+       <input id="img2" type="text" value=" " name="img2" hidden>
+       <input id="img3" type="text" value=" " name="img3" hidden>
+       <input id="img4" type="text" value=" " name="img4" hidden>
+       <button id="submitBtn" type="submit">Add New Person</button>
+    <!--</form>-->
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script defer src="js/addNew.js"></script>

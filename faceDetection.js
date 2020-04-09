@@ -22,6 +22,7 @@ module.exports = {
         const indexFunc = require('./index');
         const data64 = data.replace('data:image/jpeg;base64', '').replace('data:/image/png;base64', '');
         const buffer = Buffer.from(data64, 'base64');
+
         //image > mat
         const image = cv.imdecode(buffer);
 

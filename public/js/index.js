@@ -17,22 +17,37 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false})
 
 var ctx = canvas.getContext('2d');
 
+let b64;
+let imgURL;
+
 setInterval(function () {
     ctx.drawImage(video, 0, 0, 720, 560);
-    const imgURL = canvas.toDataURL();
-    let b64 = imgURL.replace(/^data:image.+;base64,/, '');
-
+    imgURL = canvas.toDataURL();
+    b64 = imgURL.replace(/^data:image.+;base64,/, '');
     socket.emit('image', b64);
+
+    // const saveImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    // window.location.href=saveImage;
+
     //console.log(imgURL);
 }, 100);
+
+
+//setInterval(function () {
+    socket.emit('faceRec', b64);
+//}, 5000);
+
 
 socket.on('outputImage', function (data) {
     //console.log(data);
     let div = document.getElementById('output');
     let image = new Image();
-    image.src = data;
+    image.src = data.box;
     div.innerHTML = "";
     div.appendChild(image);
+
+    //console.log(data.rec);
+
 });
 
 socket.on('dbOutput', function (data) {
