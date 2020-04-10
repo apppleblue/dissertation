@@ -33,9 +33,9 @@ setInterval(function () {
 }, 100);
 
 
-//setInterval(function () {
+setInterval(function () {
     socket.emit('faceRec', b64);
-//}, 5000);
+}, 500);
 
 
 socket.on('outputImage', function (data) {

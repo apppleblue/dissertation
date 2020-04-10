@@ -28,11 +28,11 @@ module.exports = {
                     });
                     break;
                 case 'getUserDetails':
-                    const query = {name: 'Tim'};
-                    db.collection('People').find(query).toArray(function (err, result) {
+                    //const query = {"age": 20};
+                    db.collection('People').find(data).toArray(function (err, result) {
                         if (err) throw err;
-                        console.log(result);
-                        client.close();
+                        //console.log(result);
+                        return result;
                     });
                     break;
             }
@@ -40,20 +40,24 @@ module.exports = {
         });
     },
 
-    getUserDetails: function (name){
+    getUserDetails: function (data){
         MongoClient.connect(url, function(err, client) {
             assert.equal(null, err);
-            console.log('userDets');
-
             const db = client.db(dbName);
 
+            db.collection('People').find(data).toArray(function (err, result) {
+                if (err) throw err;
+                //console.log(result);
+                returnData = result;
+            });
+            client.close();
         });
 
 
     },
 
     testReturn: function () {
-        console.log('insidetestet3e' + returnData);
+        //console.log(returnData);
         return returnData;
     }
 };
