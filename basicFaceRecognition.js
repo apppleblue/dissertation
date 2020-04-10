@@ -20,19 +20,19 @@ drawBlueRect = (image, rect, opts = { thickness: 2 }) =>
     drawRect(image, rect, new cv.Vec(255, 0, 0), opts);
 
 
-setTimeout( function () {
-    const data = funcDB.testReturn();
-    console.log(data.name);
-    testImages = sortImages(data);
+// setTimeout( function () {
+//     const data = funcDB.testReturn();
+//     console.log(data.name);
+//     testImages = sortImages(data);
+//
+//     console.log(testImages.names, testImages.numbers);
+//     //console.log(data);
+//
+//     lbph.train(testImages.images, testImages.numbers);
+//
+// },1000);
 
-    console.log(testImages.names, testImages.numbers);
-    //console.log(data);
-
-    lbph.train(testImages.images, testImages.numbers);
-
-},1000);
-
-funcDB.getUserDetails({uni: 'Perth'});
+funcDB.getUserDetails('people',{uni: 'Perth'});
 
 const runPrediction = (img) => {
     const grayImage = img.bgrToGray();
@@ -136,21 +136,6 @@ function sortImages(data){
 
 module.exports = {
     runModel: function (option, b64) {
-
-        // funcDB.getUserDetails({name: 'TestINput'});
-        //
-        // setTimeout( function () {
-        //     const data = funcDB.testReturn();
-        //     //console.log(data[0].name);
-        //
-        //     let testImages = sortImages(data);
-        //
-        //     //console.log(testImages);
-        //
-        //     // cv.imshowWait('face', testImages[0]);
-        //     // cv.destroyAllWindows();
-        //
-        // },500);
 
         if(b64!=null){
             const data64 = b64.replace('data:image/jpeg;base64', '').replace('data:/image/png;base64', '');

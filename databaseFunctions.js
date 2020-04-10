@@ -40,12 +40,12 @@ module.exports = {
         });
     },
 
-    getUserDetails: function (data){
+    getUserDetails: function (col, query){
         MongoClient.connect(url, function(err, client) {
             assert.equal(null, err);
             const db = client.db(dbName);
 
-            db.collection('People').find(data).toArray(function (err, result) {
+            db.collection(col).find(query).toArray(function (err, result) {
                 if (err) throw err;
                 //console.log(result);
                 returnData = result;

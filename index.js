@@ -21,39 +21,29 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/public/index.html');
 });
 
+//Working area start
 
+function getClass(){
+    funcDB.getUserDetails('classes', {});
 
-//Getting form data
-// app.post('/addNew', function (req, res) {
-//     console.log("Adding new user");
-//     console.log("name:" + req.body.name);
-//
-//     const newUserobj = {name: req.body.name, age: req.body.age, uni: req.body.uni, img1: req.body.img1};
-//     //, img2: req.body.img2, img3: req.body.img3, img4: req.body.img4
-//
-//     func.sendFormData('addNewUser', newUserobj);
-//
-//  res.end();
-// });
+    setTimeout(function () {
+        const data = funcDB.testReturn();
+        //console.log(data);
+        io.sockets.emit('classType', data);
+    },1000);
+}
 
-// func.sendFormData('getTotalUsers', null);
-// func.sendFormData('getUserDetails', null);
-//
-// let r = func.testReturn();
-//
-// setTimeout(function () {
-//     console.log(r);
-// }, 3000);
-//
+function getStudents(classNumber){
+    console.log(classNumber);
+    //funcDB.getUserDetails('people', { $or: [ { class1: classNumber }, { class2: classNumber } ] });
+    funcDB.getUserDetails('People', {class1:classNumber});
 
-//io.sockets.emit('dbOutput', r);
-
-// setTimeout(function () {
-//     const imgPath = '/public/assets/nn/input.jpg';
-//     //funcBFR.runModel('lbph', imgPath);
-// }, 1500);
-
-
+    setTimeout(function () {
+        const students = funcDB.testReturn();
+        //console.log(students[0].name);
+        io.sockets.emit('studentList', students);
+    }, 1000);
+}
 
 // Working area end
 
@@ -62,18 +52,18 @@ http.listen(8000, function(){
     io.on('connection', function (socket) {
         connections.push(socket);
         console.log('New User');
+        getClass();
+        // socket.on('faceRec', function (b64) {
+        //        const out = funcBFR.runModel('lbph', b64);
+        //
+        //        if(out!=null){
+        //            //console.log(out.rec);
+        //            sendImage(out);
+        //        }
+        // });
 
-        //socket.on('image', funcFD.processImg);
-
-        socket.on('faceRec', function (b64) {
-           //setInterval(function () {
-               const out = funcBFR.runModel('lbph', b64);
-
-               if(out!=null){
-                   //console.log(out.rec);
-                   sendImage(out);
-               }
-           //}, 1000);
+        socket.on('getClassList', function (classNumber) {
+            getStudents(classNumber);
         });
 
         socket.on('newUser', function (details) {
@@ -83,9 +73,9 @@ http.listen(8000, function(){
     });
 });
 
-function sendImage(out){
-    io.sockets.emit('outputImage', out);
-}
+// function sendImage(out){
+//     io.sockets.emit('outputImage', out);
+// }
 
 
 module.exports = {
