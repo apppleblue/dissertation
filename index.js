@@ -34,15 +34,24 @@ function getClass(){
 }
 
 function getStudents(classNumber){
-    console.log(classNumber);
+    //console.log(classNumber);
     //funcDB.getUserDetails('people', { $or: [ { class1: classNumber }, { class2: classNumber } ] });
+    //funcDB.getUserDetails('People', {name:'doha'});
     funcDB.getUserDetails('People', {class1:classNumber});
 
     setTimeout(function () {
         const students = funcDB.testReturn();
         //console.log(students[0].name);
+        //console.log(students[1].name);
         io.sockets.emit('studentList', students);
-    }, 1000);
+        funcBFR.trainModel(students);
+        //outputData(students);
+        runFaceRec();
+    }, 500);
+}
+
+function runFaceRec(){
+    io.sockets.emit('runFaceRec');
 }
 
 // Working area end
@@ -53,14 +62,15 @@ http.listen(8000, function(){
         connections.push(socket);
         console.log('New User');
         getClass();
-        // socket.on('faceRec', function (b64) {
-        //        const out = funcBFR.runModel('lbph', b64);
-        //
-        //        if(out!=null){
-        //            //console.log(out.rec);
-        //            sendImage(out);
-        //        }
-        // });
+
+        socket.on('faceRec', function (b64) {
+               const out = funcBFR.runModel(b64);
+
+               if(out!=null){
+                   //console.log(out.rec);
+                   sendImage(out);
+               }
+        });
 
         socket.on('getClassList', function (classNumber) {
             getStudents(classNumber);
@@ -73,13 +83,19 @@ http.listen(8000, function(){
     });
 });
 
-// function sendImage(out){
-//     io.sockets.emit('outputImage', out);
-// }
+function sendImage(out){
+    io.sockets.emit('outputImage', out);
+}
 
+function outputData(data) {
+    io.sockets.emit('outputData', data);
+}
 
 module.exports = {
     sendImage: function (htmlImg){
         io.sockets.emit('outputImage', htmlImg);
+    },
+    outputData: function (data) {
+        io.sockets.emit('outputData', data);
     }
 };

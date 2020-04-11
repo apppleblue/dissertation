@@ -1,11 +1,10 @@
 const cv = require('opencv4nodejs');
 const fs = require('file-system');
-const path = require('path');
-const funcFD = require('./faceDetection');
+//const path = require('path');
 const indexFunc = require('./index');
-const funcDB = require('./databaseFunctions');
+//const funcDB = require('./databaseFunctions');
 const classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
-const lbph = new cv.LBPHFaceRecognizer();
+let lbph;
 let testImages;
 
 const drawRect = (image, rect, color, opts = { thickness: 2 }) =>
@@ -19,22 +18,7 @@ const drawRect = (image, rect, color, opts = { thickness: 2 }) =>
 drawBlueRect = (image, rect, opts = { thickness: 2 }) =>
     drawRect(image, rect, new cv.Vec(255, 0, 0), opts);
 
-
-// setTimeout( function () {
-//     const data = funcDB.testReturn();
-//     console.log(data.name);
-//     testImages = sortImages(data);
-//
-//     console.log(testImages.names, testImages.numbers);
-//     //console.log(data);
-//
-//     lbph.train(testImages.images, testImages.numbers);
-//
-// },1000);
-
-funcDB.getUserDetails('people',{uni: 'Perth'});
-
-const runPrediction = (img) => {
+function runPrediction(img){
     const grayImage = img.bgrToGray();
     const getFaces = getFaceImage(grayImage);
 
@@ -43,19 +27,23 @@ const runPrediction = (img) => {
 
         const result1 = lbph.predict(resizedImage);
 
-        const details = ('predicted: ' + testImages.names[result1.label] + ' ' + result1.confidence);
-        //console.log('predicted: %s', nameMappings[result1.label], result1.confidence);
-        //cv.imshowWait('face', resizedImage);
-        //cv.destroyAllWindows();
-
-        const getBox = drawBox(img, testImages.names[result1.label]);
-
-        return {box:getBox, rec: details};
-
+        if(result1.confidence < 100){
+            const details = ('predicted: ' + testImages.names[result1.label] + ' ' + result1.confidence);
+            //console.log('predicted: ' + testImages.names[result1.label] + ' ' + result1.confidence);
+            const getBox = drawBox(img, testImages.names[result1.label]);
+            return {box:getBox, rec: details};
+        }else{
+            //const details = ('predicted: ' + testImages.names[result1.label] + ' ' + result1.confidence);
+            console.log('predicted: ' + testImages.names[result1.label] + ' ' + result1.confidence);
+            const getBox = drawBox(img, 'NOT IN THIS CLASS');
+            return {box:getBox, rec: 'NOT IN THIS CLASS'};
+        }
     }else{
-        console.log('No Face');
+        //console.log('No Face');
+        const getBox = drawBox(img, 'NON');
+        return {box:getBox, rec: 'NON'};
     }
-};
+}
 
 function drawBox(image, user) {
     const faces = image.copy();
@@ -87,7 +75,7 @@ const getFaceImage = (grayImg) => {
     const faceRect = classifier.detectMultiScale(grayImg).objects;
     if(!faceRect.length){
         //throw new Error('Failed to detect faces');
-        console.log('Failed to detect faces');
+        //console.log('Failed to detect faces');
     }else{
         return grayImg.getRegion(faceRect[0]);
     }
@@ -99,7 +87,6 @@ function convertToImage(data) {
     const image = cv.imdecode(buffer);
     const imageGray = image.bgrToGray();
     const getFace = getFaceImage(imageGray);
-
     return getFace.resize(80,80);
 }
 
@@ -121,21 +108,35 @@ function sortImages(data){
         arrayOfImages.push(temp3);
         arrayOfImages.push(temp4);
 
-         arrayOfNames.push(name);
+        arrayOfNames.push(name);
 
-         arrayOfNumbers.push(i);
-         arrayOfNumbers.push(i);
-         arrayOfNumbers.push(i);
-         arrayOfNumbers.push(i);
+        arrayOfNumbers.push(i);
+        arrayOfNumbers.push(i);
+        arrayOfNumbers.push(i);
+        arrayOfNumbers.push(i);
     }
-
+    console.log(arrayOfNumbers);
+    console.log(arrayOfNames);
     return {images:arrayOfImages, names:arrayOfNames, numbers:arrayOfNumbers};
 
 }
 
 
 module.exports = {
-    runModel: function (option, b64) {
+    trainModel: function(studentList){
+        lbph = new cv.LBPHFaceRecognizer();
+        //console.log(studentList[0].name);
+        testImages = sortImages(studentList);
+        console.log(studentList.length);
+        //console.log(testImages.names[0]);
+
+        // cv.imshowWait('face', testImages.images[0]);
+        // cv.destroyAllWindows();
+
+        lbph.train(testImages.images, testImages.numbers);
+    },
+
+    runModel: function (b64) {
 
         if(b64!=null){
             const data64 = b64.replace('data:image/jpeg;base64', '').replace('data:/image/png;base64', '');

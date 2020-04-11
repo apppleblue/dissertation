@@ -56,17 +56,21 @@ socket.on('studentList', function (data) {
     }
 });
 
-setInterval(function () {
-    ctx.drawImage(video, 0, 0, 720, 560);
-    let imgURL = canvas.toDataURL();
-    let b64 = imgURL.replace(/^data:image.+;base64,/, '');
-    socket.emit('faceRec', b64);
 
-    // const saveImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    // window.location.href=saveImage;
+socket.on('runFaceRec', function () {
+    setInterval(function () {
+        ctx.drawImage(video, 0, 0, 720, 560);
+        let imgURL = canvas.toDataURL();
+        let b64 = imgURL.replace(/^data:image.+;base64,/, '');
+        socket.emit('faceRec', b64);
 
-    //console.log(imgURL);
-}, 100);
+        // const saveImage = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        // window.location.href=saveImage;
+
+        //console.log(imgURL);
+    }, 100);
+});
+
 
 socket.on('outputImage', function (data) {
     //console.log(data);
@@ -78,3 +82,6 @@ socket.on('outputImage', function (data) {
     //console.log(data.rec);
 });
 
+socket.on('outputData', function (data) {
+   console.log(data);
+});
