@@ -10,10 +10,10 @@ submit.addEventListener('click', function (){
 
 
 socket.on('loginStatus', function (status) {
-    console.log(status);
+    //console.log(status);
 
     if(status === 1){
-        window.location = '/addNew.html';
+        window.location = '/userPanel.html';
     }else{
         document.getElementById('outputStatus').innerHTML = 'Wrong Details';
     }

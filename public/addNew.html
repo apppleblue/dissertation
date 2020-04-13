@@ -3,29 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>addNew</title>
-    <ul>
-        <li><a href="addNew.html">Add New Person</a></li>
-        <li><a href="index.html">Home</a></li>
-    </ul>
+    <!--<ul>-->
+        <!--<li><a href="addNew.html">Add New Person</a></li>-->
+        <!--<li><a href="index.html">Home</a></li>-->
+    <!--</ul>-->
 </head>
 <body>
 
-    <video id="inputVideo" width="300" height="300" autoplay muted></video>
-    <canvas id="inputCanvas" width="300" height="300" hidden></canvas>
-    <div id="output"></div>
-    <button id="snap">Take Picture</button>
-    <button id="saveBtn">Save Picture</button>
+    <div id="newUser">
+        <label for="typeUser">Select a user type</label>
+        <select id="typeUser" onchange="userType(this)">
+            <option value="student">Student</option>
+            <option value="staff">Staff</option>
+        </select><br><br>
+    </div>
 
-    <!--<form action="/addNew" method="POST">-->
-       <input id="name" type="text" name="name" placeholder="Enter Name">
-       <input id="age" type="number" name="age" placeholder="Enter Age">
-       <input id="uni" type="text" name="uni" placeholder="Enter Uni">
-       <input id="img1" type="text" value=" " name="img1">
-       <input id="img2" type="text" value=" " name="img2" hidden>
-       <input id="img3" type="text" value=" " name="img3" hidden>
-       <input id="img4" type="text" value=" " name="img4" hidden>
-       <button id="submitBtn" type="submit">Add New Person</button>
-    <!--</form>-->
+    <div id="staff" hidden>
+        <lable for="staffType">Select Staff Type</lable>
+        <select id="staffType">
+            <option value="1">Admin</option>
+            <option value="2">Teacher</option>
+        </select><br><br>
+
+        <label for="staffName">Name</label>
+        <input type="text" id="staffName"><br><br>
+
+        <lable for="staffUsername">Username</lable>
+        <input type="text" id="staffUsername"><br><br>
+
+        <lable for="staffPassword">Password</lable>
+        <input type="password" id="staffPassword"><br><br>
+
+        <button type="submit" id="staffBtn">Submit</button>
+    </div>
+
+    <div id="student">
+
+    </div>
+
+    <!--<video id="inputVideo" width="300" height="300" autoplay muted></video>-->
+    <!--<canvas id="inputCanvas" width="300" height="300" hidden></canvas>-->
+    <!--<div id="output"></div>-->
+    <!--<button id="snap">Take Picture</button>-->
+    <!--<button id="saveBtn">Save Picture</button>-->
+
+
+       <!--<input id="name" type="text" name="name" placeholder="Enter Name">-->
+       <!--<input id="age" type="number" name="age" placeholder="Enter Age">-->
+       <!--<input id="uni" type="text" name="uni" placeholder="Enter Uni">-->
+       <!--<input id="img1" type="text" value=" " name="img1">-->
+       <!--<input id="img2" type="text" value=" " name="img2" hidden>-->
+       <!--<input id="img3" type="text" value=" " name="img3" hidden>-->
+       <!--<input id="img4" type="text" value=" " name="img4" hidden>-->
+       <!--<button id="submitBtn" type="submit">Add New Person</button>-->
+
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script defer src="js/addNew.js"></script>

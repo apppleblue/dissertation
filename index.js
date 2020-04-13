@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const db = require('./databaseFunctions');
 const faceRec = require('./faceRecognition');
 const login = require('./loginRegister');
-
+const bcrypt = require('bcrypt');
 
 var connections = [];
 
@@ -23,7 +23,12 @@ app.get('/', function(req, res){
 
 //Working area start
 
-
+async function hash(details){
+    const salt = await bcrypt.genSalt();
+    const hashed = await bcrypt.hash(details.password, salt);
+    details.password = hashed;
+    return details;
+}
 
 
 
@@ -74,6 +79,23 @@ http.listen(8000, function(){
 
         });
 
+        socket.on('addStaff', async function (details) {
+            const sid = await db.userDetails();
+
+            details.id = parseInt(sid[0].id+1);
+
+            const hashed = await hash(details);
+
+            db.addStaff(hashed);
+
+            const status = await db.userDetails();
+            console.log(status);
+            if(status[0].id === details.id){
+                socket.emit('addStatus', 1);
+            }else{
+                socket.emit('addStatus', 0);
+            }
+        });
 
 
         // getClass();

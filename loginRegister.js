@@ -1,12 +1,12 @@
 const db = require('./databaseFunctions');
-
+const bcrypt = require('bcrypt');
 
 module.exports = {
   login: async function (data) {
       const user = await db.logindb({username:data.username});
       let status = 0;
       if(user.length === 1){
-          if(user[0].password === data.password){
+          if(user[0].username === data.username && await bcrypt.compare(data.password, user[0].password)){
               //console.log('logged in');
               status = 1;
           }else{

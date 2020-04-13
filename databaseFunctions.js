@@ -52,15 +52,49 @@ module.exports = {
             });
             client.close();
         });
-
-
     },
+
+    userDetails: async function (){
+        const db = await MongoClient.connect(url);
+        const dbo = db.db(dbName);
+        const result = await dbo.collection('users').find({}).project({id:1}).sort({id:-1}).limit(1).toArray();
+        return result;
+    },
+
 
     logindb: async function(query){
         const db = await MongoClient.connect(url);
         const dbo = db.db(dbName);
         const result = await dbo.collection('users').find(query).toArray();
         return result;
+    },
+
+    addStaff: async function(details){
+        const db = await MongoClient.connect(url);
+        const dbo = db.db(dbName);
+        dbo.collection('users').insertOne(details);
+
+        // result.then(function (result1) {
+        //     console.log(result1.ops[0]._id);
+        // })
+
+        // MongoClient.connect(url, function(err, client) {
+        //     assert.equal(null, err);
+        //     const db = client.db(dbName);
+        //
+        //     db.collection("People").insertOne(details, function (err, result) {
+        //         if (err){
+        //             console.log(err);
+        //         }else{
+        //             console.log(result);
+        //         }
+        //
+        //     });
+        //     client.close();
+        // });
+
+
+
     },
 
     testReturn: function () {
