@@ -56,6 +56,13 @@ module.exports = {
 
     },
 
+    logindb: async function(query){
+        const db = await MongoClient.connect(url);
+        const dbo = db.db(dbName);
+        const result = await dbo.collection('users').find(query).toArray();
+        return result;
+    },
+
     testReturn: function () {
         //console.log(returnData[0].name);
         return returnData;

@@ -4,26 +4,35 @@
     <meta charset="UTF-8">
     <title>OpenCV</title>
     <link rel="stylesheet" href="css/main.css">
-    <ul>
-        <li><a href="addNew.html">Add New Person</a></li>
-        <li><a href="index.html">Home</a></li>
-    </ul>
+    <!--<ul>-->
+        <!--<li><a href="addNew.html">Add New Person</a></li>-->
+        <!--<li><a href="index.html">Home</a></li>-->
+    <!--</ul>-->
 </head>
 <body>
-    <lable id="classLbl" for="class">Choose a Class</lable>
-    <select id="class"></select>
-    <button id="classBtn">Select Class</button>
-
-    <div id="studentList">
-        <h2 id="studentListTittle" hidden>Student List</h2>
+    <div id="login">
+        <input id="username" type="text" name="username" placeholder="Enter username">
+        <input id="password" type="text" name="password" placeholder="Enter password">
+        <button id="loginBtn" type="submit">Login</button>
+    </div>
+    <div id="outputStatus">
 
     </div>
 
-    <video id="inputVideo" width="720" height="560" autoplay muted hidden></video>
-    <canvas id="inputCanvas" width="720" height="560" hidden></canvas>
-    <!--<img id="output" width="720" height="560">-->
-    <div id="output"></div>
-    <div id="dbOutput"></div>
+    <!--<lable id="classLbl" for="class">Choose a Class</lable>-->
+    <!--<select id="class"></select>-->
+    <!--<button id="classBtn">Select Class</button>-->
+
+    <!--<div id="studentList">-->
+        <!--<h2 id="studentListTittle" hidden>Student List</h2>-->
+
+    <!--</div>-->
+
+    <!--<video id="inputVideo" width="720" height="560" autoplay muted hidden></video>-->
+    <!--<canvas id="inputCanvas" width="720" height="560" hidden></canvas>-->
+    <!--&lt;!&ndash;<img id="output" width="720" height="560">&ndash;&gt;-->
+    <!--<div id="output"></div>-->
+    <!--<div id="dbOutput"></div>-->
 </body>
     <script src="/socket.io/socket.io.js"></script>
     <script defer src="js/index.js"></script>
