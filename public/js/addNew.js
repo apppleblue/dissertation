@@ -1,7 +1,17 @@
 var socket = io();
 
-
+socket.emit('updateSocketId', document.cookie);
+socket.emit('checkUserStatus', {cookie:document.cookie, page:'addnew'});
 //const userType = document.getElementById('userType');
+
+socket.on('ifAllowed', function (data) {
+    console.log(data);
+   if(data.in === true){
+       //document.getElementById('addNewUser').hidden = false;
+   }else{
+       window.location = '/userPanel.html';
+   }
+});
 
 function userType(type) {
     if(type.value === 'student'){

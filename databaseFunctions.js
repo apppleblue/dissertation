@@ -61,7 +61,6 @@ module.exports = {
         return result;
     },
 
-
     logindb: async function(query){
         const db = await MongoClient.connect(url);
         const dbo = db.db(dbName);
@@ -95,6 +94,13 @@ module.exports = {
 
 
 
+    },
+
+    checkPageLevel: async function(pageName){
+        const db = await MongoClient.connect(url);
+        const dbo = db.db(dbName);
+        const result = await dbo.collection('pageLevels').find(pageName).toArray();
+        return result[0].pageLevel;
     },
 
     testReturn: function () {

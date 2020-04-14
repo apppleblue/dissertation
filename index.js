@@ -8,14 +8,15 @@ const db = require('./databaseFunctions');
 const faceRec = require('./faceRecognition');
 const login = require('./loginRegister');
 const bcrypt = require('bcrypt');
-
-var connections = [];
+const session = require('express-session');
+let users = [];
 
 //app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use(express.static(__dirname + '/public'));
 app.use('/js', express.static(__dirname + 'public/js'));
 app.use('/css', express.static(__dirname + 'public/css'));
+
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/public/index.html');
@@ -30,6 +31,19 @@ async function hash(details){
     return details;
 }
 
+function getUser(username){
+    let userPos;
+    for(let i= 0; i<users.length;){
+        if(username === users[i].username){
+            userPos = i;
+            break;
+        }else{
+            //console.log('NotSAMEMENMEBKJBEGJERJgn');
+            i++
+        }
+    }
+    return userPos;
+}
 
 
 
@@ -69,15 +83,42 @@ async function hash(details){
 http.listen(8000, function(){
     console.log('listening on *:8000');
     io.on('connection', function (socket) {
-        connections.push(socket);
+        //connections.push(socket);
         console.log('New User');
+        console.log(socket.id);
+        
+        socket.on('updateSocketId', async function (data) {
+            const username = await login.splitCookie(data);
 
+            //console.log(username.username);
+
+            const exists = getUser(username.username);
+
+            if(exists === undefined){
+                users.push({username:username.username, socketID:socket.id});
+                //console.log(users);
+            }else{
+                users[exists].socketID = socket.id;
+                //console.log(users);
+            }
+        });
 
         socket.on('login', async function (data) {
             const status = await login.login(data);
             socket.emit('loginStatus', status);
-
         });
+
+        socket.on('checkUserStatus', async function (data) {
+            const status = await login.checkStatus(data);
+            //console.log(users);
+
+            //console.log(status);
+
+            const pos = getUser(status.username);
+            io.to(users[pos].socketID).emit('ifAllowed',status);
+        });
+
+
 
         socket.on('addStaff', async function (details) {
             const sid = await db.userDetails();
@@ -117,6 +158,17 @@ http.listen(8000, function(){
         //     console.log('New User Input');
         //     db.sendFormData('addNewUser', details);
         // });
+
+        socket.on('logout', async function (data) {
+            const status = await login.checkStatus(data);
+            console.log(status);
+            const pos = getUser(status.username);
+            console.log(users);
+            console.log(pos);
+            users[pos].username = '';
+            users[pos].socketID = '';
+            console.log(users);
+        });
 
     });
 });

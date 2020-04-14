@@ -12,8 +12,10 @@ submit.addEventListener('click', function (){
 socket.on('loginStatus', function (status) {
     //console.log(status);
 
-    if(status === 1){
+    if(status.err === false){
         window.location = '/userPanel.html';
+        document.cookie = "username="+status.username;
+        document.cookie = "sid="+status.sid;
     }else{
         document.getElementById('outputStatus').innerHTML = 'Wrong Details';
     }
