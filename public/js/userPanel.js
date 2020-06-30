@@ -14,9 +14,11 @@ socket.on('ifAllowed', function (data) {
             console.log(document.cookie);
             window.location = '/index.html';
             document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.alert('Logged Out');
         });
     }else{
         window.location = '/index.html';
+        //window.alert('Not allowed on that page');
     }
 });
 

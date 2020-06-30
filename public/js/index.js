@@ -6,12 +6,11 @@ submit.addEventListener('click', function (){
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     socket.emit('login', {username:username, password:password});
+
 });
 
 
 socket.on('loginStatus', function (status) {
-    //console.log(status);
-
     if(status.err === false){
         window.location = '/userPanel.html';
         document.cookie = "username="+status.username;
