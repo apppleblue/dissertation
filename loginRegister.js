@@ -27,11 +27,16 @@ module.exports = {
       let loggedInStatus;
       const split = await splitCookie(data.cookie);
       console.log(split);
-      if(split.username === users[split.sid].username && users[split.sid].type <= pageLevel){
-          loggedInStatus = {username:split.username, in:true};
+      if(split.username !== 'temp'){
+          if(split.username === users[split.sid].username && users[split.sid].type <= pageLevel){
+              loggedInStatus = {username:split.username, in:true, userLvl:users[split.sid].type};
+          }else{
+              loggedInStatus = {username:split.username, in:false, userLvl:users[split.sid].type};
+          }
       }else{
-          loggedInStatus = {username:split.username, in:false};
+          loggedInStatus = {username:'temp', in:false};
       }
+
       return loggedInStatus;
   },
 

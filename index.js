@@ -110,7 +110,7 @@ http.listen(8000, function(){
 
         socket.on('checkUserStatus', async function (data) {
             const status = await login.checkStatus(data);
-            //console.log(users);
+            console.log(users);
 
             //console.log(status);
 
@@ -158,6 +158,8 @@ http.listen(8000, function(){
         //     console.log('New User Input');
         //     db.sendFormData('addNewUser', details);
         // });
+
+
 
         socket.on('logout', async function (data) {
             const status = await login.checkStatus(data);

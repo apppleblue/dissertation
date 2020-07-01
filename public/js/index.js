@@ -1,5 +1,6 @@
-var socket = io();
+let socket = io();
 const submit = document.getElementById('loginBtn');
+document.cookie = "username=temp";
 
 
 submit.addEventListener('click', function (){
@@ -21,8 +22,14 @@ socket.on('loginStatus', function (status) {
 });
 
 
-
-
+// socket.emit('checkUserStatus', {cookie:document.cookie, page:'index'});
+//
+//
+//
+// socket.on('ifAllowed', function (data) {
+//     console.log(data);
+// });
+//
 
 
 

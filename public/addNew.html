@@ -3,43 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>addNew</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min1.css">
     <!--<ul>-->
         <!--<li><a href="addNew.html">Add New Person</a></li>-->
         <!--<li><a href="index.html">Home</a></li>-->
     <!--</ul>-->
 </head>
 <body>
+    <nav id="nav"></nav>
+
+    <div id="userAddedMsg" class="alert alert-success sticky-top float-right" role="alert" style="width:auto; height:auto" hidden>
+        New User Added
+    </div>
+
 
     <div id="newUser">
-        <label for="typeUser">Select a user type</label>
-        <select id="typeUser" onchange="userType(this)">
+        <label for="typeUser">Select a user type</label><br>
+        <select id="typeUser" class="browser-default custom-select w-25" onchange="userType(this)">
             <option value="student">Student</option>
             <option value="staff">Staff</option>
         </select><br><br>
     </div>
 
-    <div id="staff" hidden>
-        <lable for="staffType">Select Staff Type</lable>
-        <select id="staffType">
-            <option value="1">Admin</option>
-            <option value="2">Teacher</option>
-        </select><br><br>
+    <!--<div id="staff" hidden>-->
+        <!--<lable for="staffType">Select Staff Type</lable><br>-->
+        <!--<select id="staffType" class="browser-default custom-select w-25" >-->
+            <!--<option value="1">Admin</option>-->
+            <!--<option value="2">Teacher</option>-->
+        <!--</select><br><br>-->
 
-        <label for="staffName">Name</label>
-        <input type="text" id="staffName"><br><br>
+        <!--<label for="staffName">Name</label>-->
+        <!--<input type="text" id="staffName"><br><br>-->
 
-        <lable for="staffUsername">Username</lable>
-        <input type="text" id="staffUsername"><br><br>
+        <!--<lable for="staffUsername">Username</lable>-->
+        <!--<input type="text" id="staffUsername"><br><br>-->
 
-        <lable for="staffPassword">Password</lable>
-        <input type="password" id="staffPassword"><br><br>
+        <!--<lable for="staffPassword">Password</lable>-->
+        <!--<input type="password" id="staffPassword"><br><br>-->
 
-        <button type="submit" id="staffBtn">Submit</button>
-    </div>
+        <!--<button type="submit" id="staffBtn">Submit</button>-->
+    <!--</div>-->
+
+
+    <form class="w-25 p-3" id="staff" hidden>
+        <div class="form-group">
+            <lable for="staffType">Select Staff Type</lable><br>
+            <select id="staffType" class="browser-default custom-select">
+                <option value="1">Admin</option>
+                <option value="2">Teacher</option>
+            </select><br><br>
+        </div>
+        <div class="form-group">
+            <label for="staffName">Name</label><br>
+            <input type="text" id="staffName"><br>
+        </div>
+        <div class="form-group">
+            <lable for="staffUsername">Username</lable>
+            <input type="text" id="staffUsername"><br>
+        </div>
+        <div class="form-group">
+            <lable for="staffPassword">Password</lable><br>
+            <input type="password" id="staffPassword"><br>
+        </div>
+        <div class="form-group">
+            <input type="reset" value="Reset" class="btn btn-danger"/>
+            <button type="button" id="staffBtn" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+
 
     <div id="student">
 
     </div>
+
+
+
 
     <!--<video id="inputVideo" width="300" height="300" autoplay muted></video>-->
     <!--<canvas id="inputCanvas" width="300" height="300" hidden></canvas>-->
@@ -58,6 +97,12 @@
        <!--<button id="submitBtn" type="submit">Add New Person</button>-->
 
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script defer src="js/addNew.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/addNew.js"></script>
+    <script src="js/navBar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.js"></script>
+
+
 </html>

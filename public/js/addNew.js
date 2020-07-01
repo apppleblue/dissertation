@@ -1,8 +1,8 @@
 var socket = io();
-
 socket.emit('updateSocketId', document.cookie);
 socket.emit('checkUserStatus', {cookie:document.cookie, page:'addnew'});
 //const userType = document.getElementById('userType');
+
 
 socket.on('ifAllowed', function (data) {
     console.log(data);
@@ -31,12 +31,21 @@ staffBtn.addEventListener('click', function () {
 
     const sDetails = {id:null, type:sType, name:sName, username:sUsername, password:sPassword};
 
+    document.getElementById("staff").reset();
+
     socket.emit('addStaff', sDetails);
 });
 
 socket.on('addStatus', function (status) {
     if(status === 1){
         document.getElementById('staff').hidden = true;
+
+        document.getElementById('userAddedMsg').hidden = false;
+
+        setTimeout(function () {
+            document.getElementById('userAddedMsg').hidden = true;
+        }, 3000);
+
         let msg = document.createElement('h3');
         msg.innerHTML = 'User Added';
         document.body.appendChild(msg);
