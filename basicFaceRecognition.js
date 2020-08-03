@@ -13,7 +13,6 @@ const getFaceImage = (grayImg) => {
 
 const imgsPath = __dirname + '/public/assets/random';
 const nameMappings = ['daniel', 'rock', 'vin', 'daryl', 'rick', 'negan'];
-
 const imgFiles = fs.readdirSync(imgsPath);
 
 const images = imgFiles
@@ -41,35 +40,13 @@ fisher.train(trainImages, lables);
 lbph.train(trainImages, lables);
 
 const runPrediction = (recognizer) => {
-    // testImages.forEach((img) => {
-    //     const result = recognizer.predict(img);
-    //     console.log('predicted: %s', nameMappings[result.label], result.confidence);
-    //     cv.imshowWait('face', img);
-    //     cv.destroyAllWindows();
-    // });
-    //
-    //
-    // const imgPath1 = __dirname + '/public/assets/random/rock4.jpg';
-
-    const originalImage = cv.imread( __dirname + '/public/assets/random/negan4.jpg');
-    const grayImage = originalImage.bgrToGray();
-    const getFaces = getFaceImage(grayImage);
-    const resizedImage = getFaces.resize(80,80);
-
-    // const img1 = imgFiles1
-    //     .map(file => path.resolve(imgPath1, file))
-    //     .map(filePath1 => cv.imread(filePath1))
-    //     .map(img1 => img1.bgrToGray())
-    //     .map(getFaceImage)
-    //     .map(faceImage1 => faceImage1.resize(80, 80));
-
-    const result1 = lbph.predict(resizedImage);
-    console.log('predicted: %s', nameMappings[result1.label], result1.confidence);
-    cv.imshowWait('face', originalImage);
-    cv.destroyAllWindows();
-
+    testImages.forEach((img) => {
+        const result = recognizer.predict(img);
+        console.log('predicted: %s', nameMappings[result.label], result.confidence);
+        cv.imshowWait('face', img);
+        cv.destroyAllWindows();
+    });
 };
-
 
 module.exports = {
     runModel: function (option) {
@@ -81,6 +58,7 @@ module.exports = {
             case 'fisher':
                 console.log('fisher');
                 runPrediction(fisher);
+                break;
             case 'lbph':
                 console.log('lbph');
                 runPrediction(lbph);
@@ -88,4 +66,3 @@ module.exports = {
         }
     }
 };
-
