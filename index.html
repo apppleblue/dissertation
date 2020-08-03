@@ -1,0 +1,32 @@
+<!--
+Date: 08/02/2012
+Name: Usman Muhammad
+Student Number: 16005009
+Filename: index.html
+Description: This is the main page that the user will see
+ it will allow them to input an image and detect circles.
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>OpenCV.js</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <!-- Button that allows an image to be uploaded -->
+        <input type="file" id="fileInput" name="file"/>
+        <!-- Image tag to show the original image -->
+        <img id="imageSrc" alt="No Image"/>
+        <!-- This canvas will show the processed image -->
+        <canvas id="imageCanvas"></canvas>
+        <!-- When this button is pressed the js file will detect the circles in the image -->
+        <button type="button" id="circlesButton" class="btn btn-primary">Circle Detection</button>
+        <!-- This link will allow the image to be downloaded -->
+        <a href="#" id="downloadButton">Download Image</a>
+        <div class="modal"></div>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script async src="js/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    <script defer src="js/index.js"></script>
+</html>
