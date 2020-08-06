@@ -1,9 +1,18 @@
 {
-  "name": "dissertation",
+  "name": "dist",
   "version": "0.0.1",
-  "description": "Project face recognition",
+  "description": "FaceRec",
   "dependencies": {
-    "express": "^4.15.2",
-    "socket.io": "^2.3.0"
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^3.4.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "file-system": "^2.2.2",
+    "mongodb": "^3.5.2",
+    "opencv4nodejs": "^5.5.0",
+    "socket.io": "^2.3.0",
+    "socket.io-stream": "^0.9.1",
+    "url-to-image": "^1.0.0"
   }
 }
